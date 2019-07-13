@@ -25,8 +25,11 @@ class ArrayGraph(object):
         # Add vertices if provided.
         if iterable is not None:
             for item in iterable:
-                # TODO: self.add
-                pass
+                self.addVertex(item)
+
+    def __repr__(self):
+        """Return a string representation of this graph."""
+        return 'Graph({!r})'.format(self.getVertices())
 
     def addVertex(self, vert):
         """
@@ -35,6 +38,7 @@ class ArrayGraph(object):
         """
         new_vert = ArrayVertex(vert)
         self.vertices.append(new_vert)
+        self.size += 1
 
     def addEdge(self, fromVert, toVert, weight=0):
         """

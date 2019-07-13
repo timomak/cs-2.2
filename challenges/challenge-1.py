@@ -26,3 +26,51 @@ Resources:
 2. Graphs in Python Explanation: https://www.python-course.eu/graphs_python.php
 3. StackOverflow Graphs: https://stackoverflow.com/questions/19472530/representing-graphs-data-structure-in-python
 """
+
+from graph import ArrayGraph
+import sys
+
+def read_text(file):
+    file = open(file, "r")
+
+    counter = 0
+    data_struct = None
+    temp_verices = []
+    temp_edges = []
+
+    for line in file:
+        if counter is 0: # First line
+            if line.strip().upper() == "G":
+                data_struct = ArrayGraph()
+            elif line.upper() == "D":
+                pass
+        elif counter is 1: # Second line
+            temp_verices = line.strip().split(',')
+            for vert in temp_verices:
+                data_struct.addVertex(vert)
+        else: # All the edges
+            tuple = eval(line.strip())
+
+            temp_edges.append(tuple)
+
+            if len(tuple) == 3: # If it has weight
+                data_struct.addEdge(str(tuple[0]), str(tuple[1]), tuple[2])
+            else:
+                data_struct.addEdge(str(tuple[0]), str(tuple[1]))
+
+
+        counter += 1
+
+    # print("Data Struct:", data_struct) # Graph([Vertex('1'), Vertex('2'), Vertex('3'), Vertex('4')])
+    # print("Vertices:", temp_verices) # ['1', '2', '3', '4']
+    # print("Edges:", temp_edges) # [(1, 2), (1, 4, 20), (2, 3), (2, 4)]
+    #
+    # # All the edges connected to the fist Vertex.
+    # print(data_struct.vertices[0].edges) # [(Vertex('2'), 0), (Vertex('4'), 20)]
+
+
+
+if __name__ == '__main__':
+    # read_text(file="/Users/timofeymakhlay/Documents/GitHub/cs-2.2/challenges/graph-data.txt")
+    args = sys.argv[1:]
+    read_text(args[0])
