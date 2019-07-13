@@ -3,6 +3,13 @@ Slides ([link](https://docs.google.com/presentation/u/2/d/1eOGVRA2ziw9swgB1t0VXn
 
 Github ([link](https://github.com/Make-School-Courses/CS-2.2-Advanced-Recursion-and-Graphs/blob/master/Lessons/1.Intro-Graph-Theory.md))
 
+# Overview
+- A **graph** is a collection of **vertices** (also called nodes) and a collection of **edges** which connect one vertex to another.  An edge from vertex *u* to vertex *v* is represented by the unordered pair *(u,v)* and is the same as an edge from *v* to *u*.   
+    - Unless otherwise noted, the term **graph** will represent a **undirected simple graph** which has at most one edge between two vertices, and no **loops** or edges from a vertex to itself.
+
+- A **digraph** (directed graph) is a collection of **vertices** and a collection of **arcs** (also called directed edges) which connect one vertex to another with an ordering.  An arc from vertex *u* to *v* can be represented by the ordered pair *(u,v)* and this is different than an arc from vertex *v* to *u* represented as *(v,u)* .
+
+- A **weighted graph (or digraph)** is a graph (digraph) with weights assigned to its edges (arcs).  The weight of an edge is denoted *w(u,v)* and can represent a variety of properties like distance, time, or cost.  
 
 # Graph Theory | Applied Graph Theory
 <br>
