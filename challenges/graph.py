@@ -34,8 +34,11 @@ class ArrayGraph(object):
     def addVertex(self, vert):
         """
         Adds an instance of Vertex to the graph.
-        Runtime: O(1)
+        Runtime: O(n)
         """
+        if self.getVertex(vertKey=vert) != None:
+            raise ValueError("Vertex with this key already exists.")
+            
         new_vert = ArrayVertex(vert)
         self.vertices.append(new_vert)
         self.size += 1
@@ -86,6 +89,7 @@ class ArrayGraph(object):
         for vert in self.vertices: # O(n)
             if vert.data == vertKey:
                 return vert
+        return None
 
         raise ValueError("The vertex doesn't exist.")
 
