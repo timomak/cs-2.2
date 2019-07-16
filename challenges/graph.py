@@ -122,10 +122,10 @@ class ArrayGraph(object):
             path = []
         start_vertex = self.getVertex(start_vertex)
         end_vertex = self.getVertex(end_vertex)
-        return self.find_path_recursive(start_vertex, end_vertex, path)
+        return self._find_path_recursive(start_vertex, end_vertex, path)
 
     # Got this idea from: https://www.python-course.eu/graphs_python.php
-    def find_path_recursive(self, start_vertex, end_vertex, path=None):
+    def _find_path_recursive(self, start_vertex, end_vertex, path=None):
         """
         Find a path from start_vertex to end_vertex in graph.
         Recursive loop.
@@ -139,28 +139,51 @@ class ArrayGraph(object):
 
         for (vertex, weight) in start_vertex.edges: # O(n)
             if vertex not in path: # O(n)
-                extended_path = self.find_path_recursive(vertex, end_vertex, path) # O(n)
+                extended_path = self._find_path_recursive(vertex, end_vertex, path) # O(n)
                 if extended_path:
                     return extended_path
         return None
 
+    def breadth_first_search(self, vertex, n = 0):
+        """
+        Find all neightboring nodes n edges away from the provided vertex.
+        Running: O(n^2)
+        """
+        explored = [] # All the neighbors
 
-# graph = ArrayGraph()
-# print("Empty Graph:", graph.vertices)
-# print("Adding Vertex 1-3")
-# graph.addVertex("1")
-# graph.addVertex("2")
-# graph.addVertex("3")
-# print("Graph:", graph.vertices)
-# print("Adding Edget from 1 to 2")
-# graph.addEdge("1", "2",0)
-# print("All the neighbors of Vertex 1:",graph.vertices[0].edges)
-# print("Find path between 1 and 2")
-# print(graph.find_path(start_vertex="1", end_vertex="2"))
-#
-#
-# print("Adding Edget from 2 to 3")
-# graph.addEdge("2", "3",0)
-# print("All the neighbors of Vertex 2:",graph.vertices[1].edges)
-# print("Find path between 1 and 3")
-# print(graph.find_path(start_vertex="1", end_vertex="3"))
+        start = self.getVertex(vertex) # Checking if the start Vertex is in the graph. O(n)
+
+        queue = [] # Queue to track the current Vertex we're exploring.
+
+        queue.append(start) # O(1)
+
+        counter = 0 # To stop at the right depth.
+
+        while queue: # While not Empty. O(m)
+            vert = queue.pop(0) # Dequeue the first in queue.O(m)
+
+            if vert not in explored: # If it wasn't already explored. O(x)
+                explored.append(vert) # Add it to explored. O(1)
+                edges = vert.edges # Add it's neighbors to the queue. O(1)
+
+                for edge in edges:
+                    queue.append(edge[0]) # Because we have tuples (Vertex('1'), weight).
+            counter += 1
+            if counter == n and n > 0:
+                return explored
+        return explored
+
+
+graph = ArrayGraph()
+
+graph.addVertex("1")
+graph.addVertex("2")
+graph.addVertex("3")
+print("Graph:", graph.vertices)
+print("Adding Edget from 1 to 2")
+graph.addEdge("1", "2",0)
+
+print("Adding Edget from 2 to 3")
+graph.addEdge("2", "3",0)
+
+print(graph.breadth_first_search("1", 3))

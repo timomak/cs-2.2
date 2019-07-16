@@ -60,32 +60,19 @@ def read_text(file):
 
 
         counter += 1
+
+    # Output code
     print("# Vertices:", len(data_struct.vertices))
 
     all_edges = []
-    for vertex in data_struct.vertices:
-        for edges in vertex.edges:
+    for vertex in data_struct.vertices: # O(n)
+        for edges in vertex.edges: # O(m)
             all_edges.append((int(vertex.data), int(edges[0].data), edges[1]))
 
     print("# Edges:", len(all_edges))
 
     for edge in all_edges:
         print(edge)
-
-    # print("Data Struct:", data_struct) # Graph([Vertex('1'), Vertex('2'), Vertex('3'), Vertex('4')])
-    # print("Vertices:", temp_verices) # ['1', '2', '3', '4']
-    # print("Edges:", temp_edges) # [(1, 2), (1, 4, 20), (2, 3), (2, 4)]
-    #
-    # # All the edges connected to the fist Vertex.
-    # print(data_struct.vertices[0].edges) # [(Vertex('2'), 0), (Vertex('4'), 20)]
-
-# # Vertices: 4
-# # Edges: 4
-# Edge List:
-# (1,2,10)
-# (1,4,5)
-# (2,3,5)
-# (2,4,7)
 
 
 if __name__ == '__main__':

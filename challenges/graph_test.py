@@ -112,3 +112,10 @@ class ArrayGraphTest(unittest.TestCase):
         assert graph.find_path(1, 3) == [graph.vertices[0],graph.vertices[1],graph.vertices[2]]
         with self.assertRaises(ValueError):
             graph.addEdge(3,4)
+
+    def test_breadth_first_search(self):
+        vertices = [1,2,3]
+        graph = ArrayGraph(vertices)
+        graph.addEdge(1,2)
+        graph.addEdge(2,3)
+        assert graph.breadth_first_search(1) == [graph.vertices[0], graph.vertices[1], graph.vertices[2]]
