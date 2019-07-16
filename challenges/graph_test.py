@@ -88,6 +88,15 @@ class ArrayGraphTest(unittest.TestCase):
         assert len(graph.vertices) is 3
         assert graph.getVertices() == graph.vertices
 
+    def test_get_neighbors(self):
+        vertices = [1,2,3]
+        graph = ArrayGraph(vertices)
+        graph.addEdge(1,2,3)
+        graph.addEdge(2,3,1)
+        assert graph.size is 3
+        assert graph.vertices[0].edges[0] == (graph.vertices[1], 3)
+        assert graph.getNeighbors(1) == [(graph.vertices[1], 3)]
+
     def test_find_path(self):
         vertices = [1,2,3]
         graph = ArrayGraph(vertices)

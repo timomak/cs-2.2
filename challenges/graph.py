@@ -5,7 +5,10 @@
 
 class ArrayVertex(object):
     def __init__(self, data):
-        """Initialize the Vertex with the given data."""
+        """
+        Initialize the Vertex with the given data.
+        Running: O(1)
+        """
         self.data = data
         self.edges = []
 
@@ -38,7 +41,7 @@ class ArrayGraph(object):
         """
         if self.getVertex(vertKey=vert) != None:
             raise ValueError("Vertex with this key already exists.")
-            
+
         new_vert = ArrayVertex(vert)
         self.vertices.append(new_vert)
         self.size += 1
@@ -104,12 +107,17 @@ class ArrayGraph(object):
     def getNeighbors(self, x):
         """
         Lists all vertices y such that there is an edge from the vertex x to the vertex y.
-
+        Running: O(n) because of getVertex()
         """
-        pass
+        current_vert = self.getVertex(x)
+
+        return current_vert.edges
 
     def find_path(self, start_vertex, end_vertex, path=None):
-        """Setup for the function to work properly"""
+        """
+        Setup for the function to work properly.
+        Running: O(n^3)
+        """
         if path == None:
             path = []
         start_vertex = self.getVertex(start_vertex)
@@ -121,7 +129,7 @@ class ArrayGraph(object):
         """
         Find a path from start_vertex to end_vertex in graph.
         Recursive loop.
-        Runtime: O(n^2)
+        Runtime: O(n^3)
         """
         path = path + [start_vertex]
 
@@ -131,7 +139,7 @@ class ArrayGraph(object):
 
         for (vertex, weight) in start_vertex.edges: # O(n)
             if vertex not in path: # O(n)
-                extended_path = self.find_path_recursive(vertex, end_vertex, path)
+                extended_path = self.find_path_recursive(vertex, end_vertex, path) # O(n)
                 if extended_path:
                     return extended_path
         return None
