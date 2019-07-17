@@ -61,21 +61,54 @@ def read_text(file):
 
         counter += 1
 
-    # Output code
-    print("# Vertices:", len(data_struct.vertices))
-
-    all_edges = []
-    for vertex in data_struct.vertices: # O(n)
-        for edges in vertex.edges: # O(m)
-            all_edges.append((int(vertex.data), int(edges[0].data), edges[1]))
-
-    print("# Edges:", len(all_edges))
-
-    for edge in all_edges:
-        print(edge)
-
+    return data_struct
+    # # Output code
+    # print("# Vertices:", len(data_struct.vertices))
+    #
+    # all_edges = []
+    # for vertex in data_struct.vertices: # O(n)
+    #     for edges in vertex.edges: # O(m)
+    #         all_edges.append((int(vertex.data), int(edges[0].data), edges[1]))
+    #
+    # print("# Edges:", len(all_edges))
+    #
+    # for edge in all_edges:
+    #     print(edge)
 
 if __name__ == '__main__':
     # read_text(file="/Users/timofeymakhlay/Documents/GitHub/cs-2.2/challenges/graph-data.txt")
     args = sys.argv[1:]
-    read_text(args[0])
+    graph = read_text(args[0])
+    print("Current Graph: ", graph.getVertices())
+
+    while True:
+        function = input("\nWhat function would you like to run?\n[1] Add Vertex\n[2] add Edge\n[3] Get Vertex\n[4] Get Vertices\n[5] Get Neightbors\n[6] Find Path\n[7] BFS\n[8] Find Shortest Path\nType a number:")
+
+        if function == "1":
+            vert = input("\n\nAdding Vertex\nVertex:")
+            graph.addVertex(vert)
+            print("Added {} to the graph.".format(graph.vertices[-1]))
+        elif function == "2":
+            vert1 = input("\n\nAdding Edge\nVertex 1:")
+            vert2 = input("Vertex 2:")
+            weight = input("Weight:")
+            graph.addEdge(vert1, vert2, weight)
+            print("Added edge from {} to {} of weight {}".format(graph.getVertex(vert1), graph.getVertex(vert2), weight))
+        elif function == "3":
+            vert = input("\n\nGetting Vertex\nVert Key:")
+            print(graph.getVertex(vert))
+        elif function == "4":
+            print("\n\nAll the Vertices:", graph.getVertices())
+        elif function == "5":
+            vert = input("\n\nAll Neightbors of Vertex:")
+            print("Neightbors:", graph.getNeighbors(vert))
+        elif function == "6":
+            vert1 = input("\n\nFind the path between\nVertex 1:")
+            vert2 = input("Vertex 2:")
+            path = graph.find_path(vert1, vert2)
+            print("The path from {} to {} is {}".format(graph.getVertex(vert1), graph.getVertex(vert2), path))
+        elif function == "7":
+            start = input("\n\nBFS\nStart Vertex:")
+            level = input("Number of Levels:")
+            print("All the Vertices within the first {} levels starting from {}:".format(level, graph.getVertex(start)), graph.breadth_first_search(start, level))
+        # TODO: Add shortest path.

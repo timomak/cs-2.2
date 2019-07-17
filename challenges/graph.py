@@ -115,31 +115,36 @@ class ArrayGraph(object):
 
     def find_path(self, start_vertex, end_vertex, path=None):
         """
-        Setup for the function to work properly.
+        Setup for the find path function to work properly.
         Running: O(n^3)
         """
-        if path == None:
+        if path == None: # Empty path start.
             path = []
+
+        # Check if the Vertices are in the graph.
         start_vertex = self.getVertex(start_vertex)
         end_vertex = self.getVertex(end_vertex)
+
+        # Run recursive function to find a path.
         return self._find_path_recursive(start_vertex, end_vertex, path)
 
     # Got this idea from: https://www.python-course.eu/graphs_python.php
-    def _find_path_recursive(self, start_vertex, end_vertex, path=None):
+    def _find_path_recursive(self, current_vertex, end_vertex, path=None):
         """
         Find a path from start_vertex to end_vertex in graph.
         Recursive loop.
         Runtime: O(n^3)
         """
-        path = path + [start_vertex]
+        # Set the given current vertex as the last vertex on the path.
+        path = path + [current_vertex]
 
-        if start_vertex.data == end_vertex.data:
+        # If the current Vertex is the end vertex, we found the path.
+        if current_vertex.data == end_vertex.data:
             return path
 
-
-        for (vertex, weight) in start_vertex.edges: # O(n)
-            if vertex not in path: # O(n)
-                extended_path = self._find_path_recursive(vertex, end_vertex, path) # O(n)
+        for (vertex, weight) in current_vertex.edges: # For every neighboring Vertex to the current vertex. O(n)
+            if vertex not in path: # If we haven't checked the neighbor's neighbors. O(n)
+                extended_path = self._find_path_recursive(vertex, end_vertex, path) # Continue checking the neightbor's neightbors. O(n)
                 if extended_path:
                     return extended_path
         return None
@@ -173,17 +178,29 @@ class ArrayGraph(object):
                 return explored
         return explored
 
+    def find_shortest_path(self, start_vert, end_vert):
+        """
+        Returns the Vertices that form the path from the start to the end vertex.
+        Runnning:
+        """
+        # Checking if the vertices are in the graph.
+        start = self.getVertex(start_vert)
+        end = self.getVertex(end_vert)
 
-graph = ArrayGraph()
+        
 
-graph.addVertex("1")
-graph.addVertex("2")
-graph.addVertex("3")
-print("Graph:", graph.vertices)
-print("Adding Edget from 1 to 2")
-graph.addEdge("1", "2",0)
 
-print("Adding Edget from 2 to 3")
-graph.addEdge("2", "3",0)
 
-print(graph.breadth_first_search("1", 3))
+# graph = ArrayGraph()
+#
+# graph.addVertex("1")
+# graph.addVertex("2")
+# graph.addVertex("3")
+# print("Graph:", graph.vertices)
+# print("Adding Edget from 1 to 2")
+# graph.addEdge("1", "2",0)
+#
+# print("Adding Edget from 2 to 3")
+# graph.addEdge("2", "3",0)
+#
+# print(graph.breadth_first_search("1", 3))
