@@ -119,3 +119,16 @@ class ArrayGraphTest(unittest.TestCase):
         graph.addEdge(1,2)
         graph.addEdge(2,3)
         assert graph.breadth_first_search(1) == [graph.vertices[0], graph.vertices[1], graph.vertices[2]]
+
+    def test_find_shortest_path(self):
+        vertices = [1,2,3,4,5]
+        graph = ArrayGraph(vertices)
+        graph.addEdge(1,2)
+        graph.addEdge(1,4)
+        graph.addEdge(2,3)
+        graph.addEdge(2,4)
+        graph.addEdge(2,5)
+        graph.addEdge(3,5)
+        path = graph.find_shortest_path(1, 5)
+        assert path == [graph.vertices[0], graph.vertices[1], graph.vertices[4]]
+        assert len(path) == 3
