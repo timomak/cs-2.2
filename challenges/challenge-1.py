@@ -62,18 +62,18 @@ def read_text(file):
         counter += 1
 
     return data_struct
-    # # Output code
-    # print("# Vertices:", len(data_struct.vertices))
-    #
-    # all_edges = []
-    # for vertex in data_struct.vertices: # O(n)
-    #     for edges in vertex.edges: # O(m)
-    #         all_edges.append((int(vertex.data), int(edges[0].data), edges[1]))
-    #
-    # print("# Edges:", len(all_edges))
-    #
-    # for edge in all_edges:
-    #     print(edge)
+    # Output code
+    print("# Vertices:", len(data_struct.vertices))
+
+    all_edges = []
+    for vertex in data_struct.vertices: # O(n)
+        for edges in vertex.edges: # O(m)
+            all_edges.append((int(vertex.data), int(edges[0].data), edges[1]))
+
+    print("# Edges:", len(all_edges))
+
+    for edge in all_edges:
+        print(edge)
 
 if __name__ == '__main__':
     # read_text(file="/Users/timofeymakhlay/Documents/GitHub/cs-2.2/challenges/graph-data.txt")
