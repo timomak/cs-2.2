@@ -52,5 +52,11 @@ if __name__ == '__main__':
     graph = read_text(args[0])
     vert1 = args[1]
     vert2 = args[2]
-    print(graph.getVertices)
-    print(graph.find_path(vert1, vert2))
+
+    path = graph.find_shortest_path(vert1, vert2)
+
+    vert_path = []
+    for vert in path:
+        vert_path.append(vert.data)
+    print("Vertices in shortest path:", vert_path)
+    print("Number of edges in shortest path:", len(vert_path))

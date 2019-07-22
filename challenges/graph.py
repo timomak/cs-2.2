@@ -16,6 +16,16 @@ class ArrayVertex(object):
         """Return a string represenation of this Vertex"""
         return 'Vertex({!r})'.format(self.data)
 
+    def get_neighbors(self):
+        """
+        Return Array with all the neightbors.
+        Runtime: O(n)
+        """
+        neighbors = []
+        for tuple in self.edges:
+            neighbors.append(tuple[0])
+        return neighbors
+
 class ArrayGraph(object):
     def __init__(self, iterable=None):
         """
@@ -180,14 +190,28 @@ class ArrayGraph(object):
 
     def find_shortest_path(self, start_vert, end_vert):
         """
-        Returns the Vertices that form the path from the start to the end vertex.
-        Runnning:
+        Returns the Vertices that form the path from the start to the end vertex using BFS.
+        Runnning: O(n^3)
+        Resources: https://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/
+        Thanks Vincenzo for telling me that the first BFS path found is the fastest path.
         """
         # Checking if the vertices are in the graph.
-        start = self.getVertex(start_vert)
-        end = self.getVertex(end_vert)
+        start = self.getVertex(start_vert) # O(n)
+        end = self.getVertex(end_vert) # O(n)
 
-        
+        queue = [(start, [start])] # (Vertex, [path from first to current vertex])
+
+        while queue: # While not Empty. O(m)
+            (vertex, path) = queue.pop(0) # Dequeue the first in queue. O(m)
+
+            for next in set(vertex.get_neighbors()) - set(path): # Next is one of the neightbors of the vertex that aren't in the path already. O(n^2)
+                if next == end: # If found
+                    return path + [next] # Return the current path + the current iterating vertex.
+                else: # If not found
+                    queue.append((next, path + [next])) # Add the current vertex and the path it took to get to it so far.
+        return None
+
+
 
 
 
