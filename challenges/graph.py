@@ -243,7 +243,7 @@ class ArrayGraph(object):
         start = self.getVertex(start) # O(n)
         end = self.getVertex(end) # O(n)
 
-        vertices = self.getVertices() # Array of all the vertices. O(n)
+        vertices = self.getVertices()[:] # Copy Array of all the vertices. O(n)
 
         distances = { vertex : float('inf') for vertex in vertices } # { Vertex(n) : infinite } Distance from start to the vertex. O(n)
         previous_vertices = { vertex : None for vertex in vertices } # { Vertex (n) : None } Lowest cost neightbor to get to start from vertex. O(n)
@@ -267,9 +267,6 @@ class ArrayGraph(object):
                     distances[neighbour] = alternative_route # Update the cost with the current weight
                     previous_vertices[neighbour] = current_vertex # Keep track of the current vertex because it can access the neightbor at a low cost.
 
-        # print(distances)
-        # print(previous_vertices)
-
         path = [] # Queue
         current_vertex = end # Starting to look for a path, from the "end" vertex.
         weight = distances[end]
@@ -281,21 +278,3 @@ class ArrayGraph(object):
         if path: # If there's any path found
             path.insert(0, current_vertex) # Add the "start" vertex as the first in queue (or the first vertex to access the "end" vertex)
         return path, weight
-
-
-
-
-
-# graph = ArrayGraph()
-#
-# graph.addVertex("1")
-# graph.addVertex("2")
-# graph.addVertex("3")
-# print("Graph:", graph.vertices)
-# print("Adding Edget from 1 to 2")
-# graph.addEdge("1", "2",0)
-#
-# print("Adding Edget from 2 to 3")
-# graph.addEdge("2", "3",0)
-#
-# print(graph.breadth_first_search("1", 3))
