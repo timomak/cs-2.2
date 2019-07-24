@@ -211,6 +211,48 @@ class ArrayGraph(object):
                     queue.append((next, path + [next])) # Add the current vertex and the path it took to get to it so far.
         return None
 
+    def depth_first_search(self, start):
+        """
+        DFS (Depth First Search) function on graph. Start is the "root" vertex.
+        Runtime: O(m) + O(n^3)
+        Resources: https://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/
+        """
+        start = self.getVertex(start) # O(n)
+        return [i for i in self.depth_first_search_recursive(start)] # O(m) + O(n^3)
+
+
+    def depth_first_search_recursive(self, start, visited=None):
+        """
+        DFS (Depth First Search) recursive loop. Start is the "root" vertex.
+        Runtime: O(n^3)
+        Resources: https://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/
+        """
+        if visited is None:
+            visited = set()
+        visited.add(start) # O(1)
+        for next in set(start.get_neighbors()) - visited: # O(n^2)
+            self.depth_first_search_recursive(next,visited) # O(n)
+        return visited
+
+    def depth_first_search_path(self, start, goal):
+        start = self.getVertex(start)
+        end = self.getVertex(goal)
+        path = self.depth_first_search_shortest_path_recursive(start, end)
+        print("Output:", path)
+        return path
+
+    def depth_first_search_shortest_path_recursive(self, start, end, path=None):
+        if path is None:
+            path = [start]
+        if start == end:
+            print("Should return")
+            return path
+        print("Start: {}, End: {}".format(start, end))
+        for next in set(start.get_neighbors()) - set(path):
+            path = path + [next]
+            print("Path:",path)
+            self.depth_first_search_shortest_path_recursive(next, end, path)
+
 
 
 

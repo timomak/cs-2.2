@@ -132,3 +132,15 @@ class ArrayGraphTest(unittest.TestCase):
         path = graph.find_shortest_path(1, 5)
         assert path == [graph.vertices[0], graph.vertices[1], graph.vertices[4]]
         assert len(path) == 3
+
+    def test_depth_first_search(self):
+        vertices = [1,2,3,4,5]
+        graph = ArrayGraph(vertices)
+        graph.addEdge(1,2,4)
+        graph.addEdge(1,4,5)
+        graph.addEdge(2,3,6)
+        graph.addEdge(2,4,9)
+        graph.addEdge(2,5,6)
+        graph.addEdge(3,5,10)
+        path = graph.depth_first_search(1)
+        assert len(path) == 5 # It's a dictionary, so it's hard to test the contents of it. 
