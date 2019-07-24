@@ -138,12 +138,12 @@ class ArrayGraph(object):
         # Run recursive function to find a path.
         return self._find_path_recursive(start_vertex, end_vertex, path)
 
-    # Got this idea from: https://www.python-course.eu/graphs_python.php
     def _find_path_recursive(self, current_vertex, end_vertex, path=None):
         """
         Find a path from start_vertex to end_vertex in graph.
         Recursive loop.
         Runtime: O(n^3)
+        Resources: https://www.python-course.eu/graphs_python.php
         """
         # Set the given current vertex as the last vertex on the path.
         path = path + [current_vertex]
@@ -234,24 +234,53 @@ class ArrayGraph(object):
             self.depth_first_search_recursive(next,visited) # O(n)
         return visited
 
-    def depth_first_search_path(self, start, goal):
-        start = self.getVertex(start)
-        end = self.getVertex(goal)
-        path = self.depth_first_search_shortest_path_recursive(start, end)
-        print("Output:", path)
-        return path
+    def dijkstra(self, start, end):
+        """
+        Finding the most cost effective path using Dijkstra's algorithm.
+        Runtime: O(n^2)
+        Resources: https://dev.to/mxl/dijkstras-algorithm-in-python-algorithms-for-beginners-dkc
+        """
+        start = self.getVertex(start) # O(n)
+        end = self.getVertex(end) # O(n)
 
-    def depth_first_search_shortest_path_recursive(self, start, end, path=None):
-        if path is None:
-            path = [start]
-        if start == end:
-            print("Should return")
-            return path
-        print("Start: {}, End: {}".format(start, end))
-        for next in set(start.get_neighbors()) - set(path):
-            path = path + [next]
-            print("Path:",path)
-            self.depth_first_search_shortest_path_recursive(next, end, path)
+        vertices = self.getVertices() # Array of all the vertices. O(n)
+
+        distances = { vertex : float('inf') for vertex in vertices } # { Vertex(n) : infinite } Distance from start to the vertex. O(n)
+        previous_vertices = { vertex : None for vertex in vertices } # { Vertex (n) : None } Lowest cost neightbor to get to start from vertex. O(n)
+
+        distances[start] = 0 # Setting the weight of root to 0. O(1)
+
+        while vertices: # While Vertices isn't empty O(n)
+
+            current_vertex = min(vertices, key=lambda vertex: distances[vertex]) # The lowest weight (I think)
+
+            vertices.remove(current_vertex) # Won't iterate over itself. O(1)
+
+            if distances[current_vertex] == float('inf'):
+                break # Something probably went wrong.
+
+            for neighbour, cost in current_vertex.edges: # For vertex, weight in neightbors of current vertex. edges = [(Vertex(n), weight)] O(n)
+            # MARK: neighbor could cause issues if it's not a string. (You could change it to data instead of Vertex object.)
+                alternative_route = distances[current_vertex] + cost # check the cost of passing through to the neightbor from current vertex.
+
+                if alternative_route < distances[neighbour]: # If the cost is lower than the already set weight...
+                    distances[neighbour] = alternative_route # Update the cost with the current weight
+                    previous_vertices[neighbour] = current_vertex # Keep track of the current vertex because it can access the neightbor at a low cost.
+
+        # print(distances)
+        # print(previous_vertices)
+
+        path = [] # Queue
+        current_vertex = end # Starting to look for a path, from the "end" vertex.
+        weight = distances[end]
+
+        while previous_vertices[current_vertex] is not None: # If the current vertex has neightbors
+            path.insert(0, current_vertex) # Add the current vertex to the left of the queue
+            current_vertex = previous_vertices[current_vertex] # Set the next item in the path.
+
+        if path: # If there's any path found
+            path.insert(0, current_vertex) # Add the "start" vertex as the first in queue (or the first vertex to access the "end" vertex)
+        return path, weight
 
 
 

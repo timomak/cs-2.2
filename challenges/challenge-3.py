@@ -11,10 +11,10 @@ def read_text(file):
 
     for line in file:
         if counter is 0: # First line
-            if line.strip().upper() == "G":
+            if line.strip().upper() == "G" or line.strip().upper() == "D":
                 data_struct = ArrayGraph()
-            elif line.upper() == "D":
-                pass
+            # elif line.upper() == "D":
+
         elif counter is 1: # Second line
             temp_verices = line.strip().split(',')
             for vert in temp_verices:
@@ -52,10 +52,11 @@ if __name__ == '__main__':
     graph = read_text(args[0])
     vert1 = args[1]
     vert2 = args[2]
-    print(graph.getVertex("2").get_neighbors())
-    print(vert1)
-    print(vert2)
+    # print(graph.getVertex("2"))
+    # print(vert1)
+    # print(vert2)
 
-    path = graph.depth_first_search_path(vert1, vert2)
+    path, weight = graph.dijkstra(vert1, vert2)
 
-    print(path)
+    print("There exists a path between vertex {} and {}: {}".format(vert1, vert2, "TRUE" if len(path) > 0 else "FALSE"))
+    print("The weight of the minimum weight path between vertex {} and {} is: {}".format(vert1, vert2, weight))
