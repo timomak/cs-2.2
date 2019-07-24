@@ -230,8 +230,10 @@ class ArrayGraph(object):
         if visited is None:
             visited = set()
         visited.add(start) # O(1)
-        for next in set(start.get_neighbors()) - visited: # O(n^2)
+        for next in set(start.get_neighbors()) - visited: # neighbors that haven't been visited. O(n^2)
+            print("Visited Before:", visited, next)
             self.depth_first_search_recursive(next,visited) # O(n)
+            print("Visited After:", visited)
         return visited
 
     def dijkstra(self, start, end):
@@ -278,3 +280,39 @@ class ArrayGraph(object):
         if path: # If there's any path found
             path.insert(0, current_vertex) # Add the "start" vertex as the first in queue (or the first vertex to access the "end" vertex)
         return path, weight
+
+    def clique(self, vert):
+        """
+        Start with an arbitrary vertex u and add it to the clique
+
+        For v in remaining vertices not in the clique
+        If v is adjacent to every other vertex already in the clique.
+        	Add v to the clique
+        	Discard v otherwise
+        """
+        start = self.getVertex(vert) # Root
+
+        vertices = set(self.getVertices())
+
+        clique = set()
+        clique.add(start)
+
+        for vertex in vertices - clique:
+            neighbor_of_all = True
+            for v in clique:
+                if vertex not in v.get_neighbors():
+                    # print("Vertex {} and Vertex {} are not neighbors".format(vertex, v))
+                    neighbor_of_all = False
+            if neighbor_of_all == True:
+                clique.add(vertex)
+
+        return list(clique)
+
+graph = ArrayGraph([1,2,3,4])
+graph.addEdge(1,2)
+graph.addEdge(1,3)
+graph.addEdge(2,3)
+graph.addEdge(3,4)
+
+
+print(graph.clique(1))

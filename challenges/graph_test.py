@@ -157,3 +157,15 @@ class ArrayGraphTest(unittest.TestCase):
         path, weight = graph.dijkstra(1,5)
         assert len(path) == 3
         assert weight == 10
+
+    def test_clique(self):
+        graph = ArrayGraph([1,2,3,4])
+        graph.addEdge(1,2)
+        graph.addEdge(1,3)
+        graph.addEdge(2,3)
+        graph.addEdge(3,4)
+        assert len(graph.clique(1)) == 3
+        assert graph.vertices[0] in graph.clique(1)
+        assert graph.vertices[1] in graph.clique(1)
+        assert graph.vertices[2] in graph.clique(1)
+        assert graph.vertices[3] not in graph.clique(1)
