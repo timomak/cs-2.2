@@ -50,11 +50,28 @@ def help_me(first):
     # Working this far.
 
     # TODO: Build the rest of the team. Figure out what the next class should be.
-    if remaining_slots == 5:
+    if remaining_slots == 5: # There is no bonus with exaclty 5 characters.
         # Do 2 more classes.
+        print(dict[4])
         pass
     else:
-        dict[remaining_slots]
+        options_for_next_class = dict[remaining_slots] # All classes that need all the current remaining slots.
+        next_class = None # Class that is already present in list and is an option in the list above.
+
+        for c in classes: # Finding a match
+            if c in options_for_next_class.keys():
+                next_class = c
+                break
+        if next_class == None: # No matches
+            # TODO: Pick at random.
+            print("NO MATCHES FOUND")
+
+        options_for_next_champ = class_dict[next_class]
+        
+
+
+
+
 
 
     # # MARK: Figure out how many heroes you need of the current class.
@@ -87,4 +104,4 @@ def help_me(first):
 
 
 
-help_me('kennen')
+help_me('aatrox')
