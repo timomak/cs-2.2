@@ -100,7 +100,7 @@ def _classes_dict(filename):
     with open(filename) as json_file:
         data = json.load(json_file)
         for class_obj in data.items(): # O(n)
-            class_dict[key] = []
+
             key = class_obj[1]['key'] # String
             name = class_obj[1]['name'] # String
             description = class_obj[1]['description'] # String
@@ -108,6 +108,7 @@ def _classes_dict(filename):
             bonuses = class_obj[1]['bonuses'] # Array [{'needed': int, 'effect': string}]
             needed = bonuses[-1]['needed'] # Check the highest number for needed. (In this case it's the last item in the array)
 
+            class_dict[key] = []
             dict[needed].update({class_obj[0]: set()})
 
     return class_dict
@@ -141,20 +142,26 @@ def _champ_dict(dict, filename):
                 origin2 = origin[1].lower()
                 origin = origin[0].lower()
                 champ_dict[key_] += [origin, origin2]
+                # dict[origin] += [key_]
+                # dict[origin2] += [key_]
             else:
                 origin = origin[0].lower()
                 champ_dict[key_] += [origin]
+                # dict[origin] += [key_]
 
             if len(class_) > 1:
                 class2 = class_[1].lower()
                 class_ = class_[0].lower()
                 champ_dict[key_] += [class_, class2]
+                # dict[class_] += [key_]
+                # dict[class2] += [key_]
             else:
                 class_ = class_[0].lower()
                 champ_dict[key_] += [class_]
+                # dict[class_] += [key_]
 
 
-            # print("Name: {}\nOrigin: {}, Origin 2: {}, Class: {}, Class 2: {}".format(name, origin, origin2, class_, class2))
+            print("Name: {}\nOrigin: {}, Origin 2: {}, Class: {}, Class 2: {}".format(name, origin, origin2, class_, class2))
 
             for range in dict.items(): # O(5)
                 for key in range[1]: # Not too expensive as an operation O(m)
@@ -166,4 +173,4 @@ def _champ_dict(dict, filename):
 
 
 # print(_classes_dict('classes.json'))
-# print(_champ_dict(_classes_dict('classes.json'), 'champions.json'))
+print(_champ_dict(_classes_dict('classes.json'), 'champions.json'))
