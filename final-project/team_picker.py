@@ -91,7 +91,7 @@ def _classes_dict(filename):
     Runtime: O(n)
     """
     classes = [] # ['demon', 'assasin', ...] **NOT IN USE**
-    dict = { 1: [], 2: [], 3: [], 4 : [], 6 : []} # { 1 : [ { 'robot' : ['blitzcrank'], 'exile' : ['yasuo'] } ], 2 : ... }
+    dict = { 1: {}, 2: {}, 3: {}, 4 : {}, 6 : {}} # { 1 : { 'robot' : ['blitzcrank'], 'exile' : ['yasuo'] }, 2 : {...} }
     with open(filename) as json_file:
         data = json.load(json_file)
         for class_obj in data.items(): # O(n)
@@ -103,42 +103,49 @@ def _classes_dict(filename):
             bonuses = class_obj[1]['bonuses'] # Array [{'needed': int, 'effect': string}]
             needed = bonuses[-1]['needed'] # Check the highest number for needed. (In this case it's the last item in the array)
 
-            dict[needed] += [{class_obj[0]: []}]
+            dict[needed].update({class_obj[0]: []})
     return dict
 
-def _champ_dict(dict, filename):
-    # print(dict.items())
-    with open(filename) as json_file:
-        data = json.load(json_file)
-        for champ_obj in data.items(): # O(n)
-            # print(champ_obj)
-            id = champ_obj[1]['id']
-            key = champ_obj[1]['key'] # name
-            name = champ_obj[1]['name']
-            origin = champ_obj[1]['origin'] # [0].lower() # Origin as lower cap String
-            origin2 = None # Not all Champs have 2 Origins
-            class_ = champ_obj[1]['class'] # [0].lower() # Class as lower cap String
-            class2 = None # Not all Champs have 2 Classes
-            cost = champ_obj[1]['cost']
-            ability = champ_obj[1]['ability']
-            stats = champ_obj[1]['stats']
-            items = champ_obj[1]['items']
+# def _champ_dict(dict, filename):
+#     # print(dict.items())
+#     with open(filename) as json_file:
+#         data = json.load(json_file)
+#         for champ_obj in data.items(): # O(n)
+#
+#             id = champ_obj[1]['id']
+#             key = champ_obj[1]['key'] # name
+#             name = champ_obj[1]['name']
+#             origin = champ_obj[1]['origin'] # Array of 2 at most
+#             origin2 = None # Not all Champs have 2 Origins
+#             class_ = champ_obj[1]['class'] # Array of 2 at most
+#             class2 = None # Not all Champs have 2 Classes
+#             cost = champ_obj[1]['cost']
+#             ability = champ_obj[1]['ability']
+#             stats = champ_obj[1]['stats']
+#             items = champ_obj[1]['items']
+#
+#             # Adjusting for characters with more than one class or origin attributes.
+#             if len(origin) > 1:
+#                 origin2 = origin[1].lower()
+#                 origin = origin[0].lower()
+#             else:
+#                 origin = origin[0].lower()
+#
+#             if len(class_) > 1:
+#                 class2 = class_[1].lower()
+#                 class_ = class_[0].lower()
+#             else:
+#                 class_ = class_[0].lower()
+#
+#             # print("Name: {}\nOrigin: {}, Origin 2: {}, Class: {}, Class 2: {}".format(name, origin, origin2, class_, class2))
+#
+#             for range in dict.items():
+#                 # print(range[1])
+#                 print(origin)
+#                 values = range[1].keys()
+#                 print(values)
+#                 # if :
+#                 #     print('It exists')
 
-
-            if len(origin) > 1:
-                origin2 = origin[1].lower()
-                origin = origin[0].lower()
-            else:
-                origin = origin[0].lower()
-
-            if len(class_) > 1:
-                class2 = class_[1].lower()
-                class_ = class_[0].lower()
-            else:
-                class_ = class_[0].lower()
-
-            print("Name: {}\nOrigin: {}, Origin 2: {}, Class: {}, Class 2: {}".format(name, origin, origin2, class_, class2))
-
-
-
-_champ_dict(_classes_dict('classes.json'), 'champions.json')
+print(_classes_dict('classes.json'))
+# _champ_dict(_classes_dict('classes.json'), 'champions.json')
