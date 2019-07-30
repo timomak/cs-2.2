@@ -1,151 +1,19 @@
-# https://boards.na.leagueoflegends.com/de/c/teamfight-tactics/pNEWFQMv-teamfight-tactics-developer-api
+# More info on this dict in team_picker_setup.py
+dict = {1: {'exile': {'yasuo'}, 'robot': {'blitzcrank'}}, 2: {'dragon': {'aurelionsol', 'shyvana'}, 'phantom': {'karthus', 'mordekaiser', 'kindred'}, 'guardian': {'braum', 'leona'}}, 3: {'pirate': {'pyke', 'graves', 'gangplank', 'twistedfate', 'missfortune'}, 'void': {'kassadin', 'chogath', 'reksai', 'khazix'}, 'elementalist': {'lissandra', 'anivia', 'brand', 'kennen'}, 'shapeshifter': {'gnar', 'nidalee', 'swain', 'shyvana', 'elise'}}, 4: {'imperial': {'katarina', 'draven', 'swain', 'darius'}, 'ninja': {'kennen', 'shen', 'zed', 'akali'}, 'wild': {'gnar', 'nidalee', 'warwick', 'rengar', 'ahri'}, 'brawler': {'chogath', 'warwick', 'blitzcrank', 'reksai', 'volibear'}, 'gunslinger': {'tristana', 'lucian', 'graves', 'gangplank', 'missfortune'}, 'ranger': {'vayne', 'varus', 'ashe', 'kindred'}}, 6: {'demon': {'aatrox', 'swain', 'brand', 'morgana', 'evelynn', 'varus', 'elise'}, 'glacial': {'anivia', 'lissandra', 'ashe', 'braum', 'sejuani', 'volibear'}, 'noble': {'kayle', 'lucian', 'leona', 'fiora', 'vayne', 'garen'}, 'yordle': {'gnar', 'tristana', 'poppy', 'veigar', 'lulu', 'kennen'}, 'assassin': {'katarina', 'zed', 'akali', 'rengar', 'evelynn', 'pyke', 'khazix'}, 'blademaster': {'yasuo', 'aatrox', 'gangplank', 'shen', 'fiora', 'draven'}, 'knight': {'kayle', 'poppy', 'darius', 'sejuani', 'mordekaiser', 'garen'}, 'sorcerer': {'morgana', 'aurelionsol', 'veigar', 'kassadin', 'ahri', 'lulu', 'karthus', 'twistedfate'}}}
 
-# https://solomid-resources.s3.amazonaws.com/blitz/tft/data/champions.json
-# https://solomid-resources.s3.amazonaws.com/blitz/tft/data/classes.json
-# https://solomid-resources.s3.amazonaws.com/blitz/tft/data/items.json
-# https://solomid-resources.s3.amazonaws.com/blitz/tft/data/origins.json
-# https://solomid-resources.s3.amazonaws.com/blitz/tft/data/tierlist.json
+champ_dict = {'aatrox': ['demon', 'blademaster'], 'ahri': ['wild', 'sorcerer'], 'akali': ['ninja', 'assassin'], 'anivia': ['glacial', 'elementalist'], 'ashe': ['glacial', 'ranger'], 'aurelionsol': ['dragon', 'sorcerer'], 'blitzcrank': ['robot', 'brawler'], 'brand': ['demon', 'elementalist'], 'braum': ['glacial', 'guardian'], 'chogath': ['void', 'brawler'], 'darius': ['imperial', 'knight'], 'draven': ['imperial', 'blademaster'], 'elise': ['demon', 'shapeshifter'], 'evelynn': ['demon', 'assassin'], 'fiora': ['noble', 'blademaster'], 'gangplank': ['pirate', 'gunslinger', 'blademaster'], 'garen': ['noble', 'knight'], 'gnar': ['wild', 'yordle', 'shapeshifter'], 'graves': ['pirate', 'gunslinger'], 'karthus': ['phantom', 'sorcerer'], 'kassadin': ['void', 'sorcerer'], 'katarina': ['imperial', 'assassin'], 'kayle': ['noble', 'knight'], 'kennen': ['ninja', 'yordle', 'elementalist'], 'khazix': ['void', 'assassin'], 'kindred': ['phantom', 'ranger'], 'leona': ['noble', 'guardian'], 'lissandra': ['glacial', 'elementalist'], 'lucian': ['noble', 'gunslinger'], 'lulu': ['yordle', 'sorcerer'], 'missfortune': ['pirate', 'gunslinger'], 'mordekaiser': ['phantom', 'knight'], 'morgana': ['demon', 'sorcerer'], 'nidalee': ['wild', 'shapeshifter'], 'poppy': ['yordle', 'knight'], 'pyke': ['pirate', 'assassin'], 'reksai': ['void', 'brawler'], 'rengar': ['wild', 'assassin'], 'sejuani': ['glacial', 'knight'], 'shen': ['ninja', 'blademaster'], 'shyvana': ['dragon', 'shapeshifter'], 'swain': ['imperial', 'demon', 'shapeshifter'], 'tristana': ['yordle', 'gunslinger'], 'twistedfate': ['pirate', 'sorcerer'], 'varus': ['demon', 'ranger'], 'vayne': ['noble', 'ranger'], 'veigar': ['yordle', 'sorcerer'], 'volibear': ['glacial', 'brawler'], 'warwick': ['wild', 'brawler'], 'yasuo': ['exile', 'blademaster'], 'zed': ['ninja', 'assassin']}
 
-# https://stackabuse.com/reading-and-writing-json-to-a-file-in-python/
-
-"""
-Final Project: Team Fight Tactics (League of Legends) Team Picker
-
-Goal: Get a team with as many possible class boosts.
-
-    • Has to print out all the options for which characters to buy.
-        • Has to color code late game champions.
-    • Has to show which classes those heroes are in.
-
-Stretch Challenges:
-    • Multiple classes choices.
-    • Round by round reccomendations.
-"""
-
-""" Class Struct
-"demon": {
-    "key": "demon",
-    "name": "Demon",
-    "description": "Attacks from Demons have a chance to burn all of an enemy's mana and deal that much true damage.",
-    "accentChampionImage": "https://cdn.blitz.gg/blitz/centered/Aatrox_Splash_Centered_0.jpg",
-    "bonuses": [
-      {
-        "needed": 2,
-        "effect": "25% chance on hit to Mana Burn"
-      },
-      {
-        "needed": 4,
-        "effect": "50% chance on hit to Mana Burn"
-      },
-      {
-        "needed": 6,
-        "effect": "85% chance on hit to Mana Burn"
-      }
-    ]
-}
-"""
-
-""" Champion Struct
-  "Aatrox": {
-    "id": "266",
-    "key": "Aatrox",
-    "name": "Aatrox",
-    "origin": ["Demon"],
-    "class": ["Blademaster"],
-    "cost": 3,
-    "ability": {
-      "name": "The Darkin Blade",
-      "description": "Aatrox cleaves the area in front of him, dealing damage to enemies inside it.",
-      "type": "Active",
-      "manaCost": 75,
-      "manaStart": 0,
-      "stats": [{ "type": "Damage", "value": "400 / 700 / 1000" }]
-    },
-    "stats": {
-      "offense": {
-        "damage": 65,
-        "attackSpeed": 0.65,
-        "dps": 42,
-        "range": 1
-      },
-      "defense": {
-        "health": 750,
-        "armor": 25,
-        "magicResist": 20
-      }
-    },
-    "items": [
-      "titanichydra",
-      "phantomdancer",
-      "dragonsclaw"
-    ]
-  }
-"""
-
-import json
-
-def _classes_dict(filename):
+def help_me(first):
     """
-    Open JSON file and read the data for the Classes (and Origins).
-    filename - the file name as a string.
-    Runtime: O(n)
+    Given the first champion, output who I should build.
+    Runtime:
     """
-    classes = [] # ['demon', 'assasin', ...] **NOT IN USE**
-    dict = { 1: {}, 2: {}, 3: {}, 4 : {}, 6 : {}} # { 1 : { 'robot' : ['blitzcrank'], 'exile' : ['yasuo'] }, 2 : {...} }
-    with open(filename) as json_file:
-        data = json.load(json_file)
-        for class_obj in data.items(): # O(n)
+    # first = input("Name of your first chamption: ").lower()
 
-            key = class_obj[1]['key'] # String
-            name = class_obj[1]['name'] # String
-            description = class_obj[1]['description'] # String
-            accentChampionImage = class_obj[1]['accentChampionImage'] # URL as String
-            bonuses = class_obj[1]['bonuses'] # Array [{'needed': int, 'effect': string}]
-            needed = bonuses[-1]['needed'] # Check the highest number for needed. (In this case it's the last item in the array)
+    starter_classes = champ_dict[first] # List of classes for that hero O(1)
 
-            dict[needed].update({class_obj[0]: []})
-    return dict
 
-# def _champ_dict(dict, filename):
-#     # print(dict.items())
-#     with open(filename) as json_file:
-#         data = json.load(json_file)
-#         for champ_obj in data.items(): # O(n)
-#
-#             id = champ_obj[1]['id']
-#             key = champ_obj[1]['key'] # name
-#             name = champ_obj[1]['name']
-#             origin = champ_obj[1]['origin'] # Array of 2 at most
-#             origin2 = None # Not all Champs have 2 Origins
-#             class_ = champ_obj[1]['class'] # Array of 2 at most
-#             class2 = None # Not all Champs have 2 Classes
-#             cost = champ_obj[1]['cost']
-#             ability = champ_obj[1]['ability']
-#             stats = champ_obj[1]['stats']
-#             items = champ_obj[1]['items']
-#
-#             # Adjusting for characters with more than one class or origin attributes.
-#             if len(origin) > 1:
-#                 origin2 = origin[1].lower()
-#                 origin = origin[0].lower()
-#             else:
-#                 origin = origin[0].lower()
-#
-#             if len(class_) > 1:
-#                 class2 = class_[1].lower()
-#                 class_ = class_[0].lower()
-#             else:
-#                 class_ = class_[0].lower()
-#
-#             # print("Name: {}\nOrigin: {}, Origin 2: {}, Class: {}, Class 2: {}".format(name, origin, origin2, class_, class2))
-#
-#             for range in dict.items():
-#                 # print(range[1])
-#                 print(origin)
-#                 values = range[1].keys()
-#                 print(values)
-#                 # if :
-#                 #     print('It exists')
 
-print(_classes_dict('classes.json'))
-# _champ_dict(_classes_dict('classes.json'), 'champions.json')
+
+
+help_me('kennen')
