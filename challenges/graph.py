@@ -56,7 +56,7 @@ class ArrayGraph(object):
         self.vertices.append(new_vert)
         self.size += 1
 
-    def addEdge(self, fromVert, toVert, weight=0):
+    def addEdge(self, fromVert, toVert, weight=1):
         """
         Adds a new, weighted, directed edge to the graph that connects two vertices.
         Runtime: O(number of vertices) + O(number of edges in fromVert)
@@ -231,9 +231,9 @@ class ArrayGraph(object):
             visited = set()
         visited.add(start) # O(1)
         for next in set(start.get_neighbors()) - visited: # neighbors that haven't been visited. O(n^2)
-            print("Visited Before:", visited, next)
+            # print("Visited Before:", visited, next)
             self.depth_first_search_recursive(next,visited) # O(n)
-            print("Visited After:", visited)
+            # print("Visited After:", visited)
         return visited
 
     def dijkstra(self, start, end):
@@ -245,7 +245,7 @@ class ArrayGraph(object):
         start = self.getVertex(start) # O(n)
         end = self.getVertex(end) # O(n)
 
-        vertices = self.getVertices()[:] # Copy Array of all the vertices. O(n)
+        vertices = self.getVertices().copy() # Copy Array of all the vertices. O(n)
 
         distances = { vertex : float('inf') for vertex in vertices } # { Vertex(n) : infinite } Distance from start to the vertex. O(n)
         previous_vertices = { vertex : None for vertex in vertices } # { Vertex (n) : None } Lowest cost neightbor to get to start from vertex. O(n)
