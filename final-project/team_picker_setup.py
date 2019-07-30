@@ -94,8 +94,8 @@ def _classes_dict(filename):
     filename - the file name as a string.
     Runtime: O(n)
     """
-    classes = [] # ['demon', 'assasin', ...] **NOT IN USE**
-    class_dict = {}
+    class_dict = {} # {'robot': ['blitzcrank']}
+    class_bonus_dict = {}
     dict = { 1: {}, 2: {}, 3: {}, 4 : {}, 6 : {}} # { 1 : { 'robot' : set['blitzcrank'], 'exile' : set['yasuo'] }, 2 : ... }
     with open(filename) as json_file:
         data = json.load(json_file)
@@ -109,14 +109,15 @@ def _classes_dict(filename):
             needed = bonuses[-1]['needed'] # Check the highest number for needed. (In this case it's the last item in the array)
 
             class_dict[key] = []
+            class_bonus_dict[key] = needed
             dict[needed].update({class_obj[0]: set()})
 
-    return class_dict
+    return dict
 
 def _champ_dict(dict, filename):
     """
     Sorts the heroes into their place in the dictionary.
-    Runtime: O(n) * O(m) * O(5) n = champs, m = number of classes in it's cost range.
+    Runtime: O(n) * O(m) * O(5) (Number of champions * Number of classes * 5)
     """
     champ_dict = {} # { 'aatrox' : ['demon', 'blademaster'], ...}
     with open(filename) as json_file:
@@ -172,5 +173,5 @@ def _champ_dict(dict, filename):
     return dict, champ_dict
 
 
-# print(_classes_dict('classes.json'))
-print(_champ_dict(_classes_dict('classes.json'), 'champions.json'))
+print(_classes_dict('classes.json'))
+# print(_champ_dict(_classes_dict('classes.json'), 'champions.json'))
