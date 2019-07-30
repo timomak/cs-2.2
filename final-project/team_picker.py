@@ -15,20 +15,28 @@ def help_me(first):
     # first = input("Name of your first chamption: ").lower()
 
     perfect_team = {}
+    team = [first]
+    classes = []
     remaining_slots = 8
 
     # MARK: Figure out how many heroes you need of the current class.
     starter_classes = champ_dict[first] # List of classes for that hero O(1)
 
     for current_class in starter_classes: # O(3) worst case. Because no chamption has more than 3 classes.
-        number_of_champs_for_bonus = class_bonus_dict[current_class] - 1
-        perfect_team[current_class] = [first] # The first classes we're gonna have.
+        number_of_champs_for_bonus = class_bonus_dict[current_class] - 1 # How many champs you need to get bonus.
+        perfect_team[current_class] = [first] # Setup of the first classes we're gonna have.
+        classes.append(classes)
 
         # Pick a champ of the same class and add him to the team.
-        for i in range(number_of_champs_for_bonus):
-            perfect_team[current_class] += [class_dict[current_class][i]]
+        for i in range(number_of_champs_for_bonus): # Loop for each remaining slot for the bonus.
+            # If the character is not already inside the perfect team, add it within the correct class.
+            if class_dict[current_class][i] not in perfect_team[current_class]:
+                perfect_team[current_class] += [class_dict[current_class][i]]
+            else:
+                perfect_team[current_class] += [class_dict[current_class][i+1]]
 
     print(perfect_team)
+    print(team)
 
 
 
