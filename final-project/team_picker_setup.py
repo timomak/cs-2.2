@@ -110,7 +110,7 @@ def _classes_dict(filename):
 
             class_dict[key] = []
             class_bonus_dict[key] = needed
-            dict[needed].update({class_obj[0]: set()})
+            dict[needed].update({class_obj[0]: []})
 
     return dict
 
@@ -162,16 +162,16 @@ def _champ_dict(dict, filename):
                 # dict[class_] += [key_]
 
 
-            print("Name: {}\nOrigin: {}, Origin 2: {}, Class: {}, Class 2: {}".format(name, origin, origin2, class_, class2))
+            # print("Name: {}\nOrigin: {}, Origin 2: {}, Class: {}, Class 2: {}".format(name, origin, origin2, class_, class2))
 
             for range in dict.items(): # O(5)
                 for key in range[1]: # Not too expensive as an operation O(m)
                     if key == origin or key == origin2 or key == class_ or key == class2:
-                        range[1][key].add(key_)
+                        range[1][key].append(key_)
                         # print(name, "Should be added to ", key, range[1][key])
 
-    return dict, champ_dict
+    return dict#, champ_dict
 
 
-print(_classes_dict('classes.json'))
-# print(_champ_dict(_classes_dict('classes.json'), 'champions.json'))
+# print(_classes_dict('classes.json'))
+print(_champ_dict(_classes_dict('classes.json'), 'champions.json'))
