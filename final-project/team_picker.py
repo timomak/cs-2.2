@@ -37,22 +37,28 @@ def help_me(first):
             # Adding the new character to the perfect team
             new_champ = class_dict[current_class][i]
             perfect_team[current_class] += [new_champ]
+            team.append(new_champ)
 
         else:
             # Adding the new character to the perfect team
             new_champ = class_dict[current_class][i+1]
             perfect_team[current_class] += [new_champ]
+            team.append(new_champ)
+
 
         for c in champ_dict[new_champ]:
             if c not in classes:
                 classes.append(c)
+
         remaining_slots -= 1
     # Working this far.
 
     # TODO: Build the rest of the team. Figure out what the next class should be.
     if remaining_slots == 5: # There is no bonus with exaclty 5 characters.
         # Do 2 more classes.
-        print(dict[4])
+        print("NO CLASS WITH 5")
+
+        
         pass
     else:
         options_for_next_class = dict[remaining_slots] # All classes that need all the current remaining slots.
@@ -66,34 +72,23 @@ def help_me(first):
             # TODO: Pick at random.
             print("NO MATCHES FOUND")
 
-        options_for_next_champ = class_dict[next_class]
-        
+        # print("Next Class: ", next_class)
 
+        slots_for_next = 0
+        options_for_next_champ = list(set(class_dict[next_class]) - set(team))
 
+        # print("Options for {} class: {}".format(next_class, options_for_next_champ))
 
+        perfect_team.update({next_class : []})
+        for count in range(remaining_slots):
+            new_class_champ = options_for_next_champ[count]
+            perfect_team[next_class].append(new_class_champ)
+            remaining_slots -= 1
 
-
-
-    # # MARK: Figure out how many heroes you need of the current class.
-    # starter_classes =  champ_dict[first] # List of classes for that hero O(1)
-    # for current_class in starter_classes: # O(3) worst case. Because no chamption has more than 3 classes.
-    #     number_of_champs_for_bonus = class_bonus_dict[current_class] - 1 # How many champs you need to get bonus.
-    #     perfect_team[current_class] = [first] # Setup of the first classes we're gonna have.
-    #     classes.append(current_class)
-    #
-    #     # Pick a champ of the same class and add him to the team.
-    #     for i in range(number_of_champs_for_bonus): # Loop for each remaining slot for the bonus.
-    #         # If the character is not already inside the perfect team, add it within the correct class.
-    #         if class_dict[current_class][i] not in perfect_team[current_class]:
-    #             perfect_team[current_class] += [class_dict[current_class][i]]
-    #         else:
-    #             perfect_team[current_class] += [class_dict[current_class][i+1]]
-
-
-
-    # while len(team) != 9:
-    # MARK: Decide which classes it will fill.
-
+            team.append(new_class_champ)
+            for c in champ_dict[new_class_champ]:
+                if c not in classes:
+                    classes.append(c)
 
 
 
@@ -104,4 +99,4 @@ def help_me(first):
 
 
 
-help_me('aatrox')
+help_me('kennen')
