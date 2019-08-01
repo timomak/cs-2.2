@@ -8,7 +8,9 @@ import json
 class Champion(object):
 
     def __init__(self, json):
-        print(json)
+        """
+        Creating champion object from JSON data.
+        """
         self.id = json['id']
         self.key_ = json['key'].lower() # name
         self.name = json['name']
@@ -52,7 +54,7 @@ class Champion(object):
 def main(filename):
     """
     Makes the world go round.
-    Runtime: O(n) * O(m) * O(5) (Number of champions * Number of classes * 5)
+    Runtime: O(n)
     """
     champions = []
     with open(filename) as json_file: # Open JSON File
