@@ -49,56 +49,75 @@ class Champion(object):
         """Return a string represenation of this Champion"""
         return 'Champion(key: {!r}, classes: {})'.format(self.key_, self.classes)
 
+class Champion_Class(object):
 
-def main(filename):
+    def __init__(self, json):
+        """Creating class data from json data"""
+        self.key = json['key'] # String
+        self.name = json['name'] # String
+        self.description = json['description'] # String
+        self.accentChampionImage = json['accentChampionImage'] # URL as String
+        self.bonuses = json['bonuses'] # Array [{'needed': int, 'effect': string}]
+        # self.needed = self.bonuses[-1]['needed'] # Check the highest number for needed. (In this case it's the last item in the array)
+
+    def __repr__(self):
+        """Return a string represenation of this Champion"""
+        return 'Class(key: {!r})'.format(self.key)
+
+def main():
     """
     Makes the world go round.
     Runtime: O(n)
     """
-    champions = create_champ_obj(filename)
-    print("Number of champs:",len(champions))
+    champions = create_champ_list('champions.json')
+    classes, class_bonus, max_bonus = create_classes_list('classes.json')
 
 
 
-def create_champ_obj(filename):
+def create_champ_list(filename):
     """
     Using the JSON file and the champions class, make a list containing all the champions.
+    Runtime: O(n) number of champs.
     """
-    champions = []
+    champions = [] # [Champion(key: 'aatrox', classes: ['demon', 'blademaster']), ...]
+
     with open(filename) as json_file: # Open JSON File
         data = json.load(json_file) # Get the JSON
-        count = 0
         for champ_obj in data.items(): # O(n) ('aatrox' : { **aatrox data** } )
+
+            # Creating Champions Class Object
             new_champ = Champion(champ_obj[1])
             champions.append(new_champ)
-            count += 1
+
     return champions
 
-# def _classes_dict(filename):
-#     """
-#     Open JSON file and read the data for the Classes (and Origins).
-#     filename - the file name as a string.
-#     Runtime: O(n)
-#     """
-#     class_dict = {} # {'robot': ['blitzcrank']}
-#     class_bonus_dict = {}
-#     dict = { 1: {}, 2: {}, 3: {}, 4 : {}, 6 : {}} # { 1 : { 'robot' : set['blitzcrank'], 'exile' : set['yasuo'] }, 2 : ... }
-#     with open(filename) as json_file:
-#         data = json.load(json_file)
-#         for class_obj in data.items(): # O(n)
-#
-#             key = class_obj[1]['key'] # String
-#             name = class_obj[1]['name'] # String
-#             description = class_obj[1]['description'] # String
-#             accentChampionImage = class_obj[1]['accentChampionImage'] # URL as String
-#             bonuses = class_obj[1]['bonuses'] # Array [{'needed': int, 'effect': string}]
-#             needed = bonuses[-1]['needed'] # Check the highest number for needed. (In this case it's the last item in the array)
-#
-#             class_dict[key] = []
-#             class_bonus_dict[key] = needed
-#             dict[needed].update({class_obj[0]: []})
-#
-#     return dict
+def create_classes_list(filename):
+    """
+    Open JSON file and read the data for the Classes (and Origins).
+    filename - the file name as a string.
+    Runtime: O(n) number of classes.
+    """
+    classes = [] # [Class(key: 'exile'), Class(key: 'ninja'), ... ]
+    class_bonus = { 1: [], 2: [], 3: [], 4 : [], 6 : []} # {1: [Class(key: 'exile'), Class(key: 'ninja'), ...], 2: [...], ... }
+    max_bonus = { 1: [], 2: [], 3: [], 4 : [], 6 : []} # {1: [Class(key: 'exile'), Class(key: 'robot')], 2: [...], ... }
+
+    with open(filename) as json_file:
+        data = json.load(json_file)
+        for class_obj in data.items(): # O(n)
+
+            # Creating Classes Class Objects
+            new_class = Champion_Class(class_obj[1])
+            classes.append(new_class)
+
+            # All bonus Tracking
+            bonuses = class_obj[1]['bonuses']
+            for bonus in bonuses: # O(3) worst case.
+                class_bonus[bonus['needed']] += [new_class]
+
+            # Max Bonus Tracking
+            max_bonus[bonuses[-1]['needed']] += [new_class]
+
+    return classes, class_bonus, max_bonus
 
 if __name__ == '__main__':
-    main('champions.json')
+    main()
