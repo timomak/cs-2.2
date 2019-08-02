@@ -6,7 +6,6 @@
 import json
 
 class Champion(object):
-
     def __init__(self, json):
         """
         Creating champion object from JSON data.
@@ -64,60 +63,71 @@ class Champion_Class(object):
         """Return a string represenation of this Champion"""
         return 'Class(key: {!r})'.format(self.key)
 
+class TFT_team_picker(object):
+
+    def __init__(self, champ_file, class_file):
+        """Initializing the Team Fight Tactics Team Picker based on the game data stored in JSON files."""
+        self.champions = self.create_champ_list(champ_file) # O(n)
+        self.classes, self.class_bonus, self.max_bonus, self.classes_dict = self.create_classes_list(class_file) # O(n) * O(3)
+
+    def create_champ_list(self, filename):
+        """
+        Using the JSON file and the champions class, make a list containing all the champions.
+        Runtime: O(n) number of champs.
+        """
+        champions = [] # [Champion(key: 'aatrox', classes: ['demon', 'blademaster']), ...]
+
+        with open(filename) as json_file: # Open JSON File
+            data = json.load(json_file) # Get the JSON
+            for champ_obj in data.items(): # O(n) ('aatrox' : { **aatrox data** } )
+
+                # Creating Champions Class Object
+                new_champ = Champion(champ_obj[1])
+                champions.append(new_champ)
+
+        return champions
+
+    def create_classes_list(self, filename):
+        """
+        Open JSON file and read the data for the Classes (and Origins).
+        filename - the file name as a string.
+        Runtime: O(n) * O(3) number of classes.
+        """
+        classes = [] # [Class(key: 'exile'), Class(key: 'ninja'), ... ]
+        class_bonus = { 1: [], 2: [], 3: [], 4 : [], 6 : []} # {1: [Class(key: 'exile'), Class(key: 'ninja'), ...], 2: [...], ... }
+        max_bonus = { 1: [], 2: [], 3: [], 4 : [], 6 : []} # {1: [Class(key: 'exile'), Class(key: 'robot')], 2: [...], ... }
+        classes_dict = {} # {'assassin': Class('assassin'), ...}
+        with open(filename) as json_file:
+            data = json.load(json_file)
+            for class_obj in data.items(): # O(n)
+
+                # Creating Classes Class Objects
+                new_class = Champion_Class(class_obj[1])
+                classes.append(new_class)
+
+                # All bonus Tracking
+                bonuses = class_obj[1]['bonuses']
+                for bonus in bonuses: # O(3) worst case.
+                    class_bonus[bonus['needed']] += [new_class]
+
+                # Max Bonus Tracking
+                max_bonus[bonuses[-1]['needed']] += [new_class]
+
+                # Creating a class dict.
+                classes_dict.update({new_class.key: new_class})
+
+        return classes, class_bonus, max_bonus, classes_dict
+
+    def __repr__(self):
+        """Return a string represenation of this Champion"""
+        return 'TFT(Champion Count: {!r}, Classes Count: {})'.format(len(self.champions), len(self.classes))
+
 def main():
     """
     Makes the world go round.
-    Runtime: O(n)
     """
-    champions = create_champ_list('champions.json')
-    classes, class_bonus, max_bonus = create_classes_list('classes.json')
-
-
-
-def create_champ_list(filename):
-    """
-    Using the JSON file and the champions class, make a list containing all the champions.
-    Runtime: O(n) number of champs.
-    """
-    champions = [] # [Champion(key: 'aatrox', classes: ['demon', 'blademaster']), ...]
-
-    with open(filename) as json_file: # Open JSON File
-        data = json.load(json_file) # Get the JSON
-        for champ_obj in data.items(): # O(n) ('aatrox' : { **aatrox data** } )
-
-            # Creating Champions Class Object
-            new_champ = Champion(champ_obj[1])
-            champions.append(new_champ)
-
-    return champions
-
-def create_classes_list(filename):
-    """
-    Open JSON file and read the data for the Classes (and Origins).
-    filename - the file name as a string.
-    Runtime: O(n) number of classes.
-    """
-    classes = [] # [Class(key: 'exile'), Class(key: 'ninja'), ... ]
-    class_bonus = { 1: [], 2: [], 3: [], 4 : [], 6 : []} # {1: [Class(key: 'exile'), Class(key: 'ninja'), ...], 2: [...], ... }
-    max_bonus = { 1: [], 2: [], 3: [], 4 : [], 6 : []} # {1: [Class(key: 'exile'), Class(key: 'robot')], 2: [...], ... }
-
-    with open(filename) as json_file:
-        data = json.load(json_file)
-        for class_obj in data.items(): # O(n)
-
-            # Creating Classes Class Objects
-            new_class = Champion_Class(class_obj[1])
-            classes.append(new_class)
-
-            # All bonus Tracking
-            bonuses = class_obj[1]['bonuses']
-            for bonus in bonuses: # O(3) worst case.
-                class_bonus[bonus['needed']] += [new_class]
-
-            # Max Bonus Tracking
-            max_bonus[bonuses[-1]['needed']] += [new_class]
-
-    return classes, class_bonus, max_bonus
+    team_picker = TFT_team_picker('champions.json', 'classes.json')
+    print(team_picker)
 
 if __name__ == '__main__':
     main()
