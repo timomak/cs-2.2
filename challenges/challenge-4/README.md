@@ -98,9 +98,11 @@ The solution should return the highest value of items we can fit in our Knap Sac
 1. Define a base case
 The base case is if there are no items or the capacity is 0, return 0 for our value
 1. Compute the value of an optimal solution (recurse and memoize)
+```
 # Returns the maximum of two cases:
 # (1) nth item included
 # (2) not included
+```
 `return max(value[n-1] + knapSack(Capacity-weight[n-1], items, n-1) # Add it to the bag`
 `return knapSack(Capacity, items, n-1)) # or don't add it to the bag`
 1. Solve original problem - reconstruct from the sub-problems
