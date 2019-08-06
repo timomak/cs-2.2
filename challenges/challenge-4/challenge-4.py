@@ -4,7 +4,11 @@
 # By Timofey Makhlay (github.com/timomak/cs-2.2/challenges/challenge-4)
 
 def knapsack(Capacity, items, n):
-    """Given the maximum capacity and items list, pick the highest value items with the best use of the capacity"""
+    """
+    Given the maximum capacity and items list, pick the highest value items with the best use of the capacity.
+    Resources: https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
+    Runtime: (2^n)
+    """
 
     # Base Case
     if n == 0 or Capacity == 0 :
@@ -22,8 +26,28 @@ def knapsack(Capacity, items, n):
     else:
         return max(items[n-1][2] + knapsack(Capacity - items[n-1][1] , items, n-1),
                    knapsack(Capacity, items, n-1))
-    pass
 
+def knapsack_dp(Capacity, items, n):
+    """
+    Given the maximum capacity and items list, pick the highest value items with the best use of the capacity. Using Dynamic programming.
+    Resources: https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
+    Runtime: (2^n)
+    """
+    K = [[0 for x in range(Capacity + 1)] for y in range(n + 1)] # [[0, ...range(Capacity + 1)], ...range(n + 1)]
+    # return K
+
+
+    # Build table K[][] in bottom up manner
+    for y in range(n+1):
+        for w in range(Capacity+1):
+            if y == 0 or w == 0:
+                K[y][w] = 0
+            elif items[y - 1][1] <= w:
+                K[y][w] = max(items[y - 1][2] + K[y - 1][w - items[y-1][1]],  K[y-1][w])
+            else:
+                K[y][w] = K[y - 1][w]
+
+    return K[n][Capacity]
 # To test above function
 items = (("boot", 10, 60),
          ("tent", 20, 100),
@@ -31,4 +55,5 @@ items = (("boot", 10, 60),
          ("first aid", 15, 70))
 Capacity = 50
 n = len(items)
-print(knapsack(Capacity, items, n))
+
+print(knapsack_dp(Capacity, items, n))
