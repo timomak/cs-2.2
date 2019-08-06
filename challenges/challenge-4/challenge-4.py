@@ -33,7 +33,7 @@ def knapsack_dp(Capacity, items, n):
     Resources: https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
     Runtime: (2^n)
     """
-    K = [[0 for x in range(Capacity + 1)] for y in range(n + 1)] # [[0, ...range(Capacity + 1)], ...range(n + 1)]
+    K = [[[0] for x in range(Capacity + 1)] for y in range(n + 1)] # [[0, ...range(Capacity + 1)], ...range(n + 1)]
     # return K
 
 
@@ -41,13 +41,19 @@ def knapsack_dp(Capacity, items, n):
     for y in range(n+1):
         for w in range(Capacity+1):
             if y == 0 or w == 0:
-                K[y][w] = 0
+                K[y][w][0] = 0
             elif items[y - 1][1] <= w:
-                K[y][w] = max(items[y - 1][2] + K[y - 1][w - items[y-1][1]],  K[y-1][w])
+                K[y][w][0] = max(items[y - 1][2] + K[y - 1][w - items[y-1][1]][0],  K[y-1][w][0])
+                K[y][w].append(items[y - 1][0])
             else:
-                K[y][w] = K[y - 1][w]
+                K[y][w][0] = K[y - 1][w][0]
+                K[y][w].append(items[y - 1][0])
 
-    return K[n][Capacity]
+    return_value = K[n][Capacity]
+    # print()
+
+    return K[n][Capacity][0]
+
 # To test above function
 items = (("boot", 10, 60),
          ("tent", 20, 100),
@@ -55,5 +61,6 @@ items = (("boot", 10, 60),
          ("first aid", 15, 70))
 Capacity = 50
 n = len(items)
-
-print(knapsack_dp(Capacity, items, n))
+# newlist = items[1:]
+# print(newlist)
+print("The value of the optimal solution to the knapsack problem is V={}".format(knapsack_dp(Capacity, items, n)))
