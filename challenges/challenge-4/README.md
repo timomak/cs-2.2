@@ -91,13 +91,13 @@ The value of the optimal solution to the knapsack problem is V=230
 ```
 
 ## Steps Taken for Dynamic Programming (Thanks to Tim for layout and info here.)
-1. Identify the subproblems</br>
+1. **Identify the subproblems**</br>
 First we check if the last item in the list exceeds the capacity. If it doesn't we pair it with every other item and repeat the process until the combined capacity of the items approaches or meets our maximum capacity size.
-1. What does the solution roughly look like</br>
+1. **What does the solution roughly look like**</br>
 The solution should return the highest value of items we can fit in our Knap Sack based on Capacity and out list of items.
-1. Define a base case</br>
+1. **Define a base case**</br>
 The base case is if there are no items or the capacity is 0, return 0 for our value
-1. Compute the value of an optimal solution (recurse and memoize)</br>
+1. **Compute the value of an optimal solution (recurse and memoize)**</br>
 ```
 # Returns the maximum of two cases:
 # (1) nth item included
@@ -106,4 +106,4 @@ The base case is if there are no items or the capacity is 0, return 0 for our va
 return max(value[n-1] + knapSack(Capacity-weight[n-1], items, n-1) # Add it to the bag
 return knapSack(Capacity, items, n-1)) # or don't add it to the bag
 ```
-5. Solve original problem - reconstruct from the sub-problems
+5. **Solve original problem - reconstruct from the sub-problems**
