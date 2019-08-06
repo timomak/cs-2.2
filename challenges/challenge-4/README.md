@@ -1,109 +1,69 @@
-# Knap Sack Dynamic Programming
+# Largest Subset Dynamic Programming
 
-Given the maximum capacity and items list, pick the highest value items with the best use of the capacity.
+Given an array of n distinct elements, find length of the largest subset such that every pair in the subset is such that the larger element of the pair is divisible by smaller element.
 
 References:
 * Tim and his repo ([link](https://github.com/daisukiyo/cs-2.2/blob/master/challenges/challenge-4/Part-1/README.md)).
-* Geeksforgeeks ([link](https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/))
+* Geeksforgeeks ([link](https://www.geeksforgeeks.org/largest-divisible-pairs-subset/))
 
-## Original Knap Sack
-> Original
+## Largest Subset
+> Code
 ```Python
-def knapsack(Capacity, items, n):
+def largestSubset(array, n):
     """
-    Given the maximum capacity and items list, pick the highest value items with the best use of the capacity.
-    Resources: https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
-    Runtime: (2^n)
+    Given an array of n distinct elements, find length of the largest subset such that every pair in the subset is such that the larger element of the pair is divisible by smaller element.
+    Resources: https://www.geeksforgeeks.org/largest-divisible-pairs-subset/
+    Running:
     """
 
-    # Base Case
-    if n == 0 or Capacity == 0 :
-        return 0
+    array.sort()  # O(n * log(n))
 
-    # If weight of the nth item is more than Knapsack of capacity
-    # W, then this item cannot be included in the optimal solution
-    if (items[n-1][1] > Capacity): # items[ ( "item name", weight, value ), ...]
-        print("Item weight is more than capacity")
-        return knapsack(Capacity, items, n-1)
+    largest_divisible = [0 for i in range(n)] # Storing largest divisible subset.
 
-    # return the maximum of two cases:
-    # (1) nth item included
-    # (2) not included
-    else:
-        return max(items[n-1][2] + knapsack(Capacity - items[n-1][1] , items, n-1),
-                   knapsack(Capacity, items, n-1))
+    largest_divisible[n - 1] = 1 # Last element is set to largest
+
+    # Fill values for smaller elements
+    for i in range(n - 2, -1, -1):
+
+        # Find all multiples of array[i]
+        # and consider the multiple
+        # that has largest subset
+        # beginning with it.
+        maximum = 0
+        for j in range(i + 1, n):
+            if array[j] % array[i] == 0:
+                maximum = max(maximum, largest_divisible[j])
+        largest_divisible[i] = 1 + maximum
+
+    # Return maximum value from largest_divisible list
+    return max(largest_divisible)
 ```
 > Input
 ```
-items = (("boot", 10, 60),
-         ("tent", 20, 100),
-         ("water", 30, 120),
-         ("first aid", 15, 70))
-Capacity = 50
-n = len(items)
+a = [ 1, 3, 6, 13, 17, 18 ]
+n = len(a)
 ```
 
 > Output
 ```
-230
-```
-
-## Dynamic Programming Knapsack
-> Original
-```Python
-def knapsack_dp(Capacity, items, n):
-    """
-    Given the maximum capacity and items list, pick the highest value items with the best use of the capacity. Using Dynamic programming.
-    Resources: https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
-    Runtime: (2^n)
-    """
-    K = [[[0] for x in range(Capacity + 1)] for y in range(n + 1)] # [[0, ...range(Capacity + 1)], ...range(n + 1)]
-    # return K
-
-
-    # Build table K[][] in bottom up manner
-    for y in range(n+1):
-        for w in range(Capacity+1):
-            if y == 0 or w == 0:
-                K[y][w][0] = 0
-            elif items[y - 1][1] <= w:
-                K[y][w][0] = max(items[y - 1][2] + K[y - 1][w - items[y-1][1]][0],  K[y-1][w][0])
-                K[y][w].append(items[y - 1][0])
-            else:
-                K[y][w][0] = K[y - 1][w][0]
-                K[y][w].append(items[y - 1][0])
-
-    return K[n][Capacity][0]
-```
-> Input
-```
-items = (("boot", 10, 60),
-         ("tent", 20, 100),
-         ("water", 30, 120),
-         ("first aid", 15, 70))
-Capacity = 50
-n = len(items)
-```
-
-> Output
-```
-The value of the optimal solution to the knapsack problem is V=230
+The optimal solution is: 4
 ```
 
 ## Steps Taken for Dynamic Programming (Thanks to Tim for layout and info here.)
 1. **Identify the subproblems**</br>
-First we check if the last item in the list exceeds the capacity. If it doesn't we pair it with every other item and repeat the process until the combined capacity of the items approaches or meets our maximum capacity size.
+First we check if the last item in the list is divisible. If it is, we pair it with every other item and repeat the process until we have all the divisible values matched against each other.
 1. **What does the solution roughly look like**</br>
-The solution should return the highest value of items we can fit in our Knap Sack based on Capacity and out list of items.
+The solution should be the highest divisible value by another item in the list.
 1. **Define a base case**</br>
-The base case is if there are no items or the capacity is 0, return 0 for our value
+The base case is if there are no items return 0 for our value.
 1. **Compute the value of an optimal solution (recurse and memoize)**</br>
 ```
-# Returns the maximum of two cases:
-# (1) nth item included
-# (2) not included
+# Find all multiples of array[i]
+# and consider the multiple
+# that has largest subset
+# beginning with it.
 
-return max(value[n-1] + knapSack(Capacity-weight[n-1], items, n-1) # Add it to the bag
-return knapSack(Capacity, items, n-1)) # or don't add it to the bag
+if array[j] % array[i] == 0:
+    maximum = max(maximum, largest_divisible[j])
 ```
 5. **Solve original problem - reconstruct from the sub-problems**
