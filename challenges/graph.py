@@ -308,7 +308,7 @@ class ArrayGraph(object):
 
         return list(clique)
 
-    def is_eulerian(self):
+    def is_eulerian(self): # Challenge 5
         """
         Checks if all the vertices have at least 2 edges each.
         Resources: https://www.geeksforgeeks.org/eulerian-path-and-circuit/
@@ -333,7 +333,7 @@ graph.addEdge(2,1)
 graph.addEdge(2,3)
 graph.addEdge(3,2)
 graph.addEdge(3,1)
-# 
+#
 #
 #
 # print(graph.is_eulerian())
