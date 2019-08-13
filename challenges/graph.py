@@ -308,11 +308,34 @@ class ArrayGraph(object):
 
         return list(clique)
 
-graph = ArrayGraph([1,2,3,4])
+    def is_eulerian(self):
+        """
+        Checks if all the vertices have at least 2 edges each.
+        Resources: https://www.geeksforgeeks.org/eulerian-path-and-circuit/
+        Runtime: O(n) vertices
+        """
+        even = 0 # Count
+        for i in range(len(self.vertices)): # For each vertex count
+            if len(self.vertices[i].edges) != 0 and len(self.vertices[i].edges) % 2 == 0: # if the number of edges of each vertex is not 0 and is even return True.
+                even += 1
+
+        if even == len(self.vertices): # If all even, return true
+            return True
+        else:
+            return False # False otherwise
+
+
+
+graph = ArrayGraph([1,2,3])
 graph.addEdge(1,2)
 graph.addEdge(1,3)
+graph.addEdge(2,1)
 graph.addEdge(2,3)
-graph.addEdge(3,4)
+graph.addEdge(3,2)
+graph.addEdge(3,1)
+# 
+#
+#
+# print(graph.is_eulerian())
 
-
-print(graph.clique(1))
+assert graph.is_eulerian() == True
